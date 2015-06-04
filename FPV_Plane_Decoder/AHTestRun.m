@@ -19,5 +19,5 @@ ArtificialHorizonInit
 % 
 for i=60000:length(EKF.x)    
     ModifyDisplay(EKF.theta(i)*pi/180,EKF.phi(i)*pi/180,EKF.vx(i),-EKF.z(i));
-    pause(0.001)  
+    pause(0.01)  
 end
