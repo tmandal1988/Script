@@ -53,6 +53,19 @@ function exampleGui_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to exampleGui (see VARARGIN)
 
+opengl neverselect
+
+handles.peaks=peaks(35);
+handles.membrane=membrane;
+[x,y] = meshgrid(-8:.5:8);
+r = sqrt(x.^2+y.^2) + eps;
+sinc = sin(r)./r;
+handles.sinc = sinc;
+% Set the current data value.
+handles.current_data = handles.membrane;
+surf(handles.current_data)
+
+
 % Choose default command line output for exampleGui
 handles.output = hObject;
 
@@ -79,6 +92,8 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+% Display surf plot of the currently selected data.
+surf(handles.current_data);
 
 
 % --- Executes on button press in pushbutton2.
@@ -86,6 +101,8 @@ function pushbutton2_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+% Display mesh plot of the currently selected data.
+mesh(handles.current_data);
 
 
 % --- Executes on button press in pushbutton3.
@@ -93,6 +110,8 @@ function pushbutton3_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+% Display contour plot of the currently selected data.
+contour(handles.current_data);
 
 
 % --- Executes on selection change in popupmenu1.
@@ -100,6 +119,21 @@ function popupmenu1_Callback(hObject, eventdata, handles)
 % hObject    handle to popupmenu1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+% Determine the selected data set.
+str = get(hObject, 'String');
+val = get(hObject,'Value');
+
+% Set current data to the selected data set.
+switch str{val};
+case 'Peaks' % User selects peaks.
+handles.current_data = handles.peaks;
+case 'Membrane' % User selects membrane.
+handles.current_data = handles.membrane;
+case 'Sinc' % User selects sinc.
+handles.current_data = handles.sinc;
+end
+% Save the handles structure.
+guidata(hObject,handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns popupmenu1 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from popupmenu1
@@ -110,6 +144,9 @@ function popupmenu1_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to popupmenu1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
+
+
+
 
 % Hint: popupmenu controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
