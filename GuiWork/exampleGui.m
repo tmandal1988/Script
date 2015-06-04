@@ -1,4 +1,5 @@
 function varargout = exampleGui(varargin)
+%changes to commit
 % EXAMPLEGUI MATLAB code for exampleGui.fig
 %      EXAMPLEGUI, by itself, creates a new EXAMPLEGUI or raises the existing
 %      singleton*.
